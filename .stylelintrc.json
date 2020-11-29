@@ -1,0 +1,9 @@
+{
+    "extends": ["stylelint-config-standard", "stylelint-config-idiomatic-order"],
+    "rules": {
+        "indentation": null,
+        "declaration-colon-newline-after": null,
+        "value-list-comma-newline-after": null,
+        "selector-pseudo-class-no-unknown": null
+    }
+}

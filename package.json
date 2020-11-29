@@ -1,0 +1,45 @@
+{
+    "name": "the-bureau",
+    "version": "0.1.0",
+    "private": true,
+    "devDependencies": {
+        "@types/classnames": "^2.2.10",
+        "@types/react": "^16.9.49",
+        "@types/react-dom": "^16.9.8",
+        "@types/uuid": "^8.3.0",
+        "@typescript-eslint/eslint-plugin": "^4.1.1",
+        "@typescript-eslint/parser": "^4.1.1",
+        "autoprefixer": "9.8.6",
+        "eslint": "^7.9.0",
+        "eslint-config-prettier": "^6.11.0",
+        "eslint-plugin-prettier": "^3.1.4",
+        "eslint-plugin-react": "^7.20.6",
+        "eslint-plugin-simple-import-sort": "^5.0.3",
+        "parcel-bundler": "^1.12.4",
+        "postcss": "^8.0.7",
+        "postcss-modules": "^3.2.2",
+        "prettier": "^2.1.2",
+        "react": "^16.13.1",
+        "react-dom": "^16.13.1",
+        "stylelint": "^13.7.1",
+        "stylelint-config-idiomatic-order": "^8.1.0",
+        "stylelint-config-property-sort-order-smacss": "^6.3.0",
+        "stylelint-config-standard": "^20.0.0",
+        "stylelint-order": "^4.1.0",
+        "typescript": "^4.0.3",
+        "typescript-plugin-css-modules": "^2.7.0"
+    },
+    "scripts": {
+        "dev": "parcel src/index.html --out-dir build/debug",
+        "build": "parcel build src/index.html --out-dir build/release --public-url ./",
+        "lint:js": "eslint **/*.{ts,tsx} --quiet --fix",
+        "lint:css": "stylelint **/*.css"
+    },
+    "dependencies": {
+        "classnames": "^2.2.6",
+        "firebase": "^8.1.1",
+        "mobx": "^6.0.4",
+        "mobx-react-lite": "^3.0.0",
+        "uuid": "^8.3.0"
+    }
+}

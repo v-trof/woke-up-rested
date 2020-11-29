@@ -1,0 +1,10 @@
+{
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true,
+        "source.fixAll.stylelint": true
+    },
+    "css.validate": false,
+    "less.validate": false,
+    "scss.validate": false,
+    "typescript.tsdk": "c:\\Projects\\the-bureau\\node_modules\\typescript\\lib"
+}
