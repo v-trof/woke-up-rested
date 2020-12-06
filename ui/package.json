@@ -31,7 +31,7 @@
     },
     "scripts": {
         "dev": "parcel src/index.html --out-dir build/debug",
-        "build": "parcel build src/index.html --out-dir build/release --public-url ./",
+        "build": "parcel build src/index.html src/pair.html src/device.html --out-dir build/release --public-url ./",
         "lint:js": "eslint **/*.{ts,tsx} --quiet --fix",
         "lint:css": "stylelint **/*.css"
     },
