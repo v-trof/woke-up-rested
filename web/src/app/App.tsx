@@ -2,8 +2,8 @@ import { observer } from 'mobx-react-lite';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import { googleAuth, logOut } from './api/auth';
-import { store } from './store/store';
+import { googleAuth, logOut } from '../api/auth';
+import { store } from './appStore';
 
 export const App = observer(() => {
     return (

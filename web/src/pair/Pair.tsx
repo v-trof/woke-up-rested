@@ -1,8 +1,8 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import { googleAuth, logOut } from './api/auth';
-import { app, db, FirebaseUser } from './api/firebase';
+import { googleAuth, logOut } from '../api/auth';
+import { app, db, FirebaseUser } from '../api/firebase';
 
 export const PairApp = () => {
     const [deviceId, setDeviceId] = React.useState('');

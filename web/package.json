@@ -30,10 +30,10 @@
         "typescript-plugin-css-modules": "^2.7.0"
     },
     "scripts": {
-        "dev:app": "parcel src/index.html --out-dir build/debug",
-        "dev:pair": "parcel src/pair.html --out-dir build/debug",
-        "dev:device": "parcel src/device.html --out-dir build/debug",
-        "build": "parcel build src/index.html src/pair.html src/device.html --out-dir build/release --public-url ./",
+        "dev:app": "parcel src/app/index.html --out-dir build/debug",
+        "dev:pair": "parcel src/pair/pair.html --out-dir build/debug",
+        "dev:device": "parcel src/device/device.html --out-dir build/debug",
+        "build": "parcel build src/app/index.html src/pair/pair.html src/device/device.html --out-dir build/release --public-url ./",
         "lint:js": "eslint **/*.{ts,tsx} --quiet --fix",
         "lint:css": "stylelint **/*.css"
     },
