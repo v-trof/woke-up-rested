@@ -14,7 +14,7 @@ export const PairApp = () => {
     });
 
     const pair = async () => {
-        const email = user?.email;
+        const email = user && user.email;
 
         if (!email) {
             setPairStatus('Logging in required');
@@ -39,14 +39,14 @@ export const PairApp = () => {
     return (
         <>
             <header>
-                {user?.displayName ? (
+                {user && user.displayName ? (
                     <button onClick={logOut}>LOG OUT</button>
                 ) : (
                     <button onClick={googleAuth}>LOG IN With google</button>
                 )}
             </header>
             <main>
-                {user?.displayName && (
+                {user && user.displayName && (
                     <div>
                         <label htmlFor="deviceId">Device id:</label>
                         <input value={deviceId} onChange={(e) => setDeviceId(e.target.value)} id="deviceId"></input>
