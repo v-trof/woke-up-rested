@@ -4,13 +4,12 @@ import 'firebase/firestore';
 import firebase from 'firebase/app';
 
 const firebaseConfig = {
-    apiKey: 'AIzaSyBmFvevVP8Nrp5iNsdEPtl01gjTto7Q310',
-    authDomain: 'the-bureau-proto.firebaseapp.com',
-    databaseURL: 'https://the-bureau-proto.firebaseio.com',
-    projectId: 'the-bureau-proto',
-    storageBucket: 'the-bureau-proto.appspot.com',
-    messagingSenderId: '490885082895',
-    appId: '1:490885082895:web:8d19ec230159b6f9d0587a',
+    apiKey: 'AIzaSyB6cPOZ9JLUFpd13LNU878GoQOltzUUAMk',
+    authDomain: 'woke-up-rested.firebaseapp.com',
+    projectId: 'woke-up-rested',
+    storageBucket: 'woke-up-rested.appspot.com',
+    messagingSenderId: '558131846902',
+    appId: '1:558131846902:web:abc839cb50476d730116d7',
 };
 
 const app = firebase.initializeApp(firebaseConfig);
