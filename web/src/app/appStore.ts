@@ -133,4 +133,4 @@ setInterval(() => {
     } else if (wakeUp.isAfter(store.alarm) && !status.pressure) {
         push('Time to go to sleep. If you want to do anything tomorrow');
     }
-}, 3000);
+}, 7000);
