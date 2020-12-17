@@ -22,12 +22,14 @@ export const PairApp = () => {
         }
 
         try {
-            const doc = await db.collection('pair').doc(email).get();
+            const doc = await db.collection('pair-user-device').doc(email).get();
             const pairs = doc.exists ? (doc.data() as { devices: string[] }) : { devices: [] };
             if (!pairs.devices.includes(deviceId)) {
                 pairs.devices.push(deviceId);
-                await db.collection('pair').doc(email).set(pairs);
+                await db.collection('pair-user-device').doc(email).set(pairs);
             }
+
+            await db.collection('pair-device-user').doc(deviceId).set({ email: email });
 
             setPairStatus('Pairing successful');
         } catch (error) {
