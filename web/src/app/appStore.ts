@@ -130,7 +130,7 @@ setInterval(() => {
 
     if (store.alarm.isBefore(store.time) && status.pressure) {
         push('Wake up samurai, we have a project to submit');
-    } else if (wakeUp.isAfter(store.alarm) && !status.pressure) {
+    } else if (store.time.isBefore(store.alarm) && wakeUp.isAfter(store.alarm) && !status.pressure) {
         push('Time to go to sleep. If you want to do anything tomorrow');
     }
 }, 7000);
