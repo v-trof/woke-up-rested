@@ -2,6 +2,7 @@
 const got = require('got');
 const notifier = require('node-notifier');
 const INTERVAL = 50000;
+const path = require('path');
 
 const hhmmStr2seconds = (hhmmStr) => {
     const [hours, minutes] = hhmmStr.split(':').map((x) => parseInt(x));
@@ -61,12 +62,16 @@ const reactToUserState = async (token) => {
         if (desiredState === 'sleep') {
             notifier.notify({
                 title: 'You should go to sleep',
+                icon: path.join(__dirname, 'sleep.png'),
                 message: 'This will help you feel energetic tomorrow',
+                sound: true,
             });
         } else {
             notifier.notify({
                 title: 'Time to wake up!',
+                icon: path.join(__dirname, 'wake.png'),
                 message: 'Don`t sleep though your life',
+                sound: true,
             });
         }
     }
