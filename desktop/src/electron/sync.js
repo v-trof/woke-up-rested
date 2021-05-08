@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const got = require('got');
 const notifier = require('node-notifier');
-const INTERVAL = 10000;
+const INTERVAL = 50000;
 
 const hhmmStr2seconds = (hhmmStr) => {
     const [hours, minutes] = hhmmStr.split(':').map((x) => parseInt(x));
@@ -58,10 +58,17 @@ const reactToUserState = async (token) => {
 
     if (actualState !== desiredState) {
         console.log('NOTIFY');
-        notifier.notify({
-            title: 'You shold be' + desiredState,
-            message: 'DO IT',
-        });
+        if (desiredState === 'sleep') {
+            notifier.notify({
+                title: 'You should go to sleep',
+                message: 'This will help you feel energetic tomorrow',
+            });
+        } else {
+            notifier.notify({
+                title: 'Time to wake up!',
+                message: 'Don`t sleep though your life',
+            });
+        }
     }
 };
 

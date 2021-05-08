@@ -10,7 +10,7 @@ import * as ReactDOM from 'react-dom';
 const { Content } = Layout;
 
 import { googleAuth, logOut } from '../api/auth';
-import { Store, store } from './appStore';
+import { store } from './appStore';
 
 const Device = observer((props: { id: string; status: { pressure: boolean } }) => {
     return (
@@ -25,8 +25,26 @@ const Device = observer((props: { id: string; status: { pressure: boolean } }) =
     );
 });
 
-const setAlarm = action((time: Store['alarm']) => (store.alarm = time));
-const setTime = action((time: Store['alarm']) => (store.time = time || moment()));
+const hhmm2moment = (hhmmStr: string) => {
+    const date = moment();
+    const [hours, minutes] = hhmmStr.split(':').map((x) => parseInt(x));
+    date.hour(hours);
+    date.minute(minutes);
+    return date;
+};
+const moment2hhmm = (date: moment.Moment | null) => {
+    if (!date) {
+        return '00:00';
+    }
+    return `${date.hours()}:${date.minutes()}`;
+};
+
+const setBedtime = action((date: moment.Moment | null) => {
+    store.sleepTime.bedtime = moment2hhmm(date);
+});
+const setAlarm = action((date: moment.Moment | null) => {
+    store.sleepTime.alarm = moment2hhmm(date);
+});
 
 export const App = observer(() => {
     if (!store.readyState.app) {
@@ -39,11 +57,11 @@ export const App = observer(() => {
             extra={
                 store.user.name ? (
                     <Button danger onClick={logOut}>
-                        LOG OUT
+                        Sign out
                     </Button>
                 ) : (
                     <Button danger type="primary" onClick={googleAuth}>
-                        LOG IN With google
+                        Sign in with google
                     </Button>
                 )
             }
@@ -52,26 +70,34 @@ export const App = observer(() => {
                 {store.user.name && (
                     <main>
                         <section>
+                            <h3>Alarm</h3>
+                            <Row>
+                                <Col span={12}>
+                                    Bedtime <br />
+                                    <TimePicker
+                                        value={hhmm2moment(store.sleepTime.bedtime)}
+                                        onChange={setBedtime}
+                                        format={'HH:mm'}
+                                    />
+                                </Col>
+                                <Col span={12}>
+                                    Alarm
+                                    <br />
+                                    <TimePicker
+                                        value={hhmm2moment(store.sleepTime.alarm)}
+                                        onChange={setAlarm}
+                                        format={'HH:mm'}
+                                    />
+                                </Col>
+                            </Row>
+                        </section>
+                        <Divider />
+                        <section>
                             <h3>Your devices</h3>
                             <Row>
                                 {store.devices.list.map((id) => (
                                     <Device id={id} status={store.devices.status[id]} key={id} />
                                 ))}
-                            </Row>
-                        </section>
-                        <Divider />
-                        <section>
-                            <h3>Alarm</h3>
-                            <Row>
-                                <Col span={12}>
-                                    Alarm <br />
-                                    <TimePicker value={store.alarm} onChange={setAlarm} format={'HH:mm'} />
-                                </Col>
-                                <Col span={12}>
-                                    World time override
-                                    <br />
-                                    <TimePicker value={store.time} onChange={setTime} format={'HH:mm'} />
-                                </Col>
                             </Row>
                         </section>
                     </main>

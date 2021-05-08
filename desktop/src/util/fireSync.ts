@@ -12,6 +12,9 @@ export const fireSync = async <K extends string, T extends { [key in K]: unknown
     const update = action(async () => {
         const doc = await docRef.get();
         const data = doc.exists && doc.data();
+
+        console.log('UPD', key, data);
+
         set(data || defaultValue);
     });
 

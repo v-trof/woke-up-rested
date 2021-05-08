@@ -7,6 +7,8 @@ const { startAlarmInterval } = require('./sync');
 function createWindow() {
     const win = new BrowserWindow({
         width: 800,
+        title: 'Full time sleep',
+        titleBarStyle: 'hidden',
         height: 600,
         webPreferences: {
             preload: path.join(__dirname, 'electron-preload.js'),
@@ -14,6 +16,8 @@ function createWindow() {
             nodeIntegration: true,
         },
     });
+
+    win.setMenu(null);
 
     if (isDev) {
         win.loadURL('http://localhost:1234', { userAgent: 'Chrome' });

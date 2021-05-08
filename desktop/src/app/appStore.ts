@@ -29,14 +29,16 @@ export type Store = {
         loading: boolean;
     };
 
+    sleepTime: {
+        bedtime: string;
+        alarm: string;
+    };
+
     user: {
         name: string;
         email: string;
         token: string;
     };
-
-    alarm: moment.Moment | null;
-    time: moment.Moment;
 };
 
 app.auth().onAuthStateChanged(
@@ -55,6 +57,11 @@ const defaultDevices = {
     loading: false,
 };
 
+const defaultSleepTime = {
+    bedtime: '23:00',
+    alarm: '9:00',
+};
+
 export const store: Store = observable({
     readyState: {
         auth: false,
@@ -69,8 +76,7 @@ export const store: Store = observable({
         token: '',
     },
     devices: defaultDevices,
-    time: moment(),
-    alarm: null,
+    sleepTime: defaultSleepTime,
 });
 
 const getUserToken = async (email: string) => {
@@ -92,7 +98,7 @@ reaction(
     async (email) => {
         if (!email) {
             store.devices = defaultDevices;
-            store.alarm = null;
+            store.sleepTime = defaultSleepTime;
             return;
         }
 
@@ -117,30 +123,17 @@ reaction(
             );
         }
 
+        await fireSync(
+            'sleepTime',
+            store,
+            app.firestore().collection('userToken2sleepTime').doc(token),
+            defaultSleepTime,
+        );
+
         runInAction(() => {
             store.user.token = token;
             store.devices.list = pairs.devices;
-
-            const alarmStr = localStorage.getItem(`${email}-alarm`);
-            if (alarmStr !== null) {
-                const alarm = moment(alarmStr);
-                if (alarm.isBefore(store.time)) {
-                    alarm.day(store.time.get('day'));
-                }
-                store.alarm = alarm;
-            }
         });
-    },
-);
-
-reaction(
-    () => store.alarm,
-    (alarm) => {
-        if (!alarm) {
-            localStorage.removeItem(`${store.user.email}-alarm`);
-            return;
-        }
-        localStorage.setItem(`${store.user.email}-alarm`, alarm.toString());
     },
 );
 
