@@ -1,70 +1,47 @@
-import functions = require('firebase-functions');
-import admin = require('firebase-admin');
+import * as functions from "firebase-functions";
+import * as admin from "firebase-admin";
+
+type DeviceStatus = {pressure: boolean;}
+
 admin.initializeApp();
+export const setDeviceStatus = functions.https.onRequest(async (req, res) => {
+  const {pressure, deviceId} = req.body as DeviceStatus & { deviceId: string };
 
-type Status = { pressure: boolean };
+  if (typeof deviceId === "undefined" || typeof pressure === "undefined") {
+    res.status(400);
+    res.json({error: "DeviceId & Pressure are required request params"});
+    return;
+  }
 
-const sendDeviceStatus = async (deviceId: string, status: Status) => {
-    const pairDoc = await admin.firestore().collection(`/pair-device-user/`).doc(deviceId).get();
-    const user = pairDoc.data() as { email: string };
-    if (!user || !user.email) {
-        functions.logger.log(`[${deviceId}] unowned device, skipping state push`);
-        return null;
-    }
+  functions.logger.log("Set pressure for", deviceId, ":", pressure);
 
-    functions.logger.log(`[${deviceId}] got user = ${user.email}`);
+  const status = admin.firestore().collection("deviceStatus");
+  await status.doc(deviceId).set({pressure});
 
-    const userDoc = await admin.firestore().collection(`/user/`).doc(user.email).get();
-    const userData = userDoc.data() as { tokens: string[] };
-    if (!userData || !userData.tokens || userData.tokens.length === 0) {
-        functions.logger.log(`[${deviceId}] user hasn't opened the app yet`);
-        return null;
-    }
-
-    const payload = {
-        data: {
-            deviceId,
-            status: JSON.stringify(status),
-        },
-    };
-
-    const response = await admin.messaging().sendToDevice(userData.tokens, payload);
-
-    const tokensToRemove = new Set<string>();
-    response.results.forEach((result, index) => {
-        const error = result.error;
-        if (error) {
-            const badToken = userData.tokens[index];
-            functions.logger.error('Failure sending notification to', badToken, error);
-            // Cleanup the tokens who are not registered anymore.
-            if (
-                error.code === 'messaging/invalid-registration-token' ||
-                error.code === 'messaging/registration-token-not-registered'
-            ) {
-                tokensToRemove.add(badToken);
-            }
-        }
-    });
-
-    userData.tokens = userData.tokens.filter((token) => !tokensToRemove.has(token));
-
-    return userDoc.ref.set(userData);
-};
-
-exports.reportStatus = functions.firestore.document('/status/{deviceId}').onUpdate(async (snap, context) => {
-    const status = snap.after.data() as Status;
-    const deviceId = context.params.deviceId;
-
-    functions.logger.log(`[${deviceId}] Status changed form ${JSON.stringify(snap.before.data())} to ${status}`);
-
-    return sendDeviceStatus(deviceId, status);
+  res.json({result: "Update successful."});
 });
 
-exports.reportInitialStatus = functions.firestore.document('/status/{deviceId}').onCreate((snap, context) => {
-    const status = snap.data() as Status;
-    const deviceId = context.params.deviceId;
+export const getDeviceStatus = functions.https.onRequest(async (req, res) => {
+  const deviceId = req.query.deviceId;
+  functions.logger.log("Get pressure for", deviceId);
 
-    functions.logger.log(`[${deviceId}] Status created ${status}`);
+  if (typeof deviceId !== "string") {
+    res.status(400);
+    res.json({error: "DeviceId is a required query param"});
+    return;
+  }
 
-    return sendDeviceStatus(deviceId, status);
+  const status = admin.firestore().collection("deviceStatus");
+  const doc = await status.doc(deviceId).get();
+
+  if (!doc.exists) {
+    res.status(400);
+    res.json({error: `Device with id ${deviceId} not found`});
+    return;
+  }
+
+  const data = doc.data() as DeviceStatus;
+
+
+  res.json({status: {pressure: data.pressure}});
 });
