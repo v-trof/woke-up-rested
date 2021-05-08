@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "target": "ESNext",
+        "module": "ESNext",
+        "jsx": "react",
+        "moduleResolution": "node",
+        "lib": ["dom", "ESNext"],
+        "allowSyntheticDefaultImports": true,
+        "plugins": [{ "name": "typescript-plugin-css-modules" }],
+        "strict": true
+    },
+    "include": ["src/**/*"]
+}
