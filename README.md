@@ -24,5 +24,5 @@ Trofimov Vsevolod. Saint-Petersburg State University. Study group 17Б-11ПУ. 2
 - Connect HX711 to ESP32: `DT->D4, SCK->D5`
 - Install platform io extestion for Visual Studio code
 - Update DeviceId and wifi credentials in `device/src/main.cpp` (proper pairing in progress)
-- Flash ESP32 using PlatformUI GUI
+- Flash ESP32 using PlatformIO GUI
 
