@@ -5,7 +5,7 @@
 
 /* <Board> */
 // info LED
-#define LED_BUILTIN 2
+const int LED_BUILTIN = 2;
 
 // HX711 circuit wiring
 const int LOADCELL_DOUT_PIN = 4;
